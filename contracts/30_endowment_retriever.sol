@@ -1,12 +1,12 @@
 contract EndowmentRetriever {
 
     address creator;
-    uint contract_creation_value; // original endowment
+    uint contract_creation_value; // original endowment 原始养老金 在合约创建时由构造函数指定
 
     function EndowmentRetriever() public 
     {
         creator = msg.sender; 								
-        contract_creation_value = msg.value;  				// the endowment of this contract in wei 
+        contract_creation_value = msg.value;  				// 以wei为单位的此合约养老金，有合约创建（部署）交易的value决定
     }
 	
     function getContractCreationValue() constant returns (uint) // returns the original endowment of the contract
@@ -16,7 +16,7 @@ contract EndowmentRetriever {
     
     function sendOneEtherHome() public         	
     {						
-    	creator.send(1000000000000000000);				// send 1 ETH home
+    	creator.send(1000000000000000000);				// send 1 ETH home 合约给合约创建者发送 1 ether
     }
         
     /**********
@@ -35,6 +35,9 @@ contract EndowmentRetriever {
 
 
 /*
+
+以下是部署的示例
+首先是二进制接口ABI
 
 ********************** DEPLOYED WITH ******************************
 
@@ -64,11 +67,13 @@ var endowmentretrieverContract = web3.eth.contract([{
     "type": "constructor"
 }]);
 
+// 以下是geth命令行部署示例
+
 var endowmentretriever = endowmentretrieverContract.new({
     from: web3.eth.accounts[0],
     data: '60606040525b33600060006101000a81548173ffffffffffffffffffffffffffffffffffffffff02191690830217905550346001600050819055505b6101908061004a6000396000f30060606040526000357c01000000000000000000000000000000000000000000000000000000009004806341c0e1b51461004f5780636c6f1d931461005c578063f239e5281461007d5761004d565b005b61005a6004506100fc565b005b61006760045061008a565b6040518082815260200191505060405180910390f35b61008860045061009c565b005b60006001600050549050610099565b90565b600060009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff166000670de0b6b3a7640000604051809050600060405180830381858888f19350505050505b565b600060009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff163373ffffffffffffffffffffffffffffffffffffffff16141561018d57600060009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16ff5b5b56',
     gas: 1000000,
-    value: 3000000000000000000 // START CONTRACT WITH AN ENDOWMENT OF 3 ETH
+    value: 3000000000000000000 // START CONTRACT WITH AN ENDOWMENT OF 3 ETH 创建合约时设置value会使合约保存有ether
 }, function(e, contract) {
     if (typeof contract.address != 'undefined') {
         console.log(e, contract);
@@ -76,6 +81,8 @@ var endowmentretriever = endowmentretrieverContract.new({
     }
 })
 
+
+// 以下是geth命令行操作示例，演示用各种交易API与合约交互时产生的效果
 
 ********************** EXECUTION IN GETH ******************************
 
