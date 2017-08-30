@@ -1,6 +1,6 @@
 // This contract creates a 9x9 map of Tile objects. 
 // Each tile has an elevation value (as well as an owner and descriptorContract which aren't used here)
-// 
+// 在构造函数中，elevation值通过循环被设置为标准值
 // In the constructor, the elevations are set to standard values via for loops.
 
 contract StructAndFor {
